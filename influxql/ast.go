@@ -1315,6 +1315,10 @@ func (s *SelectStatement) NamesInSelect() []string {
 	var a []string
 
 	for _, f := range s.Fields {
+		if f.Alias != "" {
+			a = append(a, f.Alias)
+			continue
+		}
 		a = append(a, walkNames(f.Expr)...)
 	}
 

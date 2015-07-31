@@ -224,6 +224,15 @@ func TestSelect_NamesInSelect(t *testing.T) {
 	}
 }
 
+// Ensure the idents from the select clause properly parse `as`
+func TestSelect_NamesInSelectAs(t *testing.T) {
+	s := MustParseSelectStatement("select count(asdf), bar, bin as baz from cpu")
+	a := s.NamesInSelect()
+	if !reflect.DeepEqual(a, []string{"asdf", "bar", "baz"}) {
+		t.Fatal("expected names asdf, bar, and baz")
+	}
+}
+
 // Ensure the idents from the where clause can come out
 func TestSelect_NamesInWhere(t *testing.T) {
 	s := MustParseSelectStatement("select * from cpu where time > 23s AND (asdf = 'jkl' OR (foo = 'bar' AND baz = 'bar'))")
